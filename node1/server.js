@@ -46,6 +46,11 @@ app.get("/say/:id/xxx/:name", function(req, res)  {
     
 });
 
+app.get("/", function(req, res, next) {
+ 
+    res.status(200);
+    res.sendFile(path.join(__dirname, './public', 'index.html'));
+});
 
 app.use(function(req, res, next) {
     console.log("In 404");
