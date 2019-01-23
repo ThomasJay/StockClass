@@ -16,7 +16,15 @@ let customer1 = {
 
  let customers = [customer1, customer2];
 
+ var analyticsEventEmitter;
+
+ exports.setAnalyticsEventEmitter = function(analyticsEventEmitterParam) {
+    analyticsEventEmitter = analyticsEventEmitterParam;
+ }
+
 exports.findAllCustomers = function(req, res) {
+
+    let startTimestamp = Date.now();
 
     res.status(200);
     res.setHeader("Content-Type", "application/json")
@@ -25,11 +33,21 @@ exports.findAllCustomers = function(req, res) {
         customers: customers
     };
 
+    let endTimestamp = Date.now();
+
     res.json(customersHolder);
+
+
+    let totalTime = endTimestamp - startTimestamp;
+
+    analyticsEventEmitter.emit('analytic', {eventName: "findAllCustomersStarted", totalMS: totalTime})
+
   
    };
 
    exports.findCustomerById = function(req, res) {
+
+    let startTimestamp = Date.now();
 
     let customerId = req.params.id
 
@@ -75,13 +93,19 @@ exports.findAllCustomers = function(req, res) {
         res.json(foundCustomer);
     }
 
+    let endTimestamp = Date.now();
+
+    let totalTime = endTimestamp - startTimestamp;
+
+    analyticsEventEmitter.emit('analytic', {eventName: "findCustomerById", totalMS: totalTime})
+
  
   
    };
 
    exports.createCustomer = function(req, res) {
 
-    res.status(200);
+    res.status(201);
     res.setHeader("Content-Type", "application/json")
 
     let body = req.body;
@@ -99,8 +123,117 @@ exports.findAllCustomers = function(req, res) {
   
    };
 
-// TODO:
+
+   exports.updateCustomerWithId = function(req, res) {
+
+    let customerId = req.params.id
+
+    console.log("CustomerId=" + customerId);
+
+
+    let body = req.body;
+
+    console.log("updateCustomerWithId processing");
+    console.dir(body);
+
+    let found = false;
+
+    let index = -1;
+
+    let foundIndex = -1;
+
+    customers.forEach(function(customer) {
+
+        console.log("Iterate CustomerId=" + customer.id);
+
+        index = index + 1;
+
+        if (customer.id == customerId) {
+
+            console.log("Found CustomerId=" + customer.id);
+
+            found = true;
+
+            foundIndex = index;
+
+        }
+
+    });
+
+    if (found) {
+        res.status(200);
+        res.setHeader("Content-Type", "application/json")
+    
+        customers[foundIndex] = body;
+        res.json(body);
+    }
+    else {
+        res.status(400);
+        res.setHeader("Content-Type", "application/json")
+    
+        res.json({status: "Failed to update, could not find customer"});
+    }
+    
+
  
-// updateCustomerWithId
-// deleteCustomerWithId
+    
+  
+   };
+
+
+   exports.deleteCustomerWithId = function(req, res) {
+
+    let customerId = req.params.id
+
+    console.log("CustomerId=" + customerId);
+
+
+    let found = false;
+
+    let index = -1;
+
+    let foundIndex = -1;
+
+    customers.forEach(function(customer) {
+
+        console.log("Iterate CustomerId=" + customer.id);
+
+        index = index + 1;
+
+        if (customer.id == customerId) {
+
+            console.log("Found CustomerId=" + customer.id);
+
+            found = true;
+
+            foundIndex = index;
+
+        }
+
+    });
+
+    if (found) {
+        res.status(200);
+        res.setHeader("Content-Type", "application/json")
+    
+        customers.splice(foundIndex, 1);
+
+
+        res.json({status:"Sucess"});
+    }
+    else {
+        res.status(400);
+        res.setHeader("Content-Type", "application/json")
+    
+        res.json({status: "Failed to delete, could not find customer"});
+    }
+    
+  
+
+
+    
+  
+   };
+
+
 

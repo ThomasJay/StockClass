@@ -3,15 +3,28 @@
 // Stock Class
 
 let uuid = require('uuid');
-
+let events = require('events');
 let express = require('express');
-
 let bodyParser = require('body-parser');
 
 let app = express();
 
+var analyticsEventEmitter = new events.EventEmitter();
+
+app.set("analyticsEventEmitter", analyticsEventEmitter);
+
+analyticsEventEmitter.on('analytic', function(info) {
+    console.log('analytic Received. ' + JSON.stringify(info));
+ });
+
+
+ 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+
+
 
 
 require("./routes/customers.js")(app);
@@ -39,6 +52,14 @@ app.use(function(err, req, res, next) {
 });
 
 
-app.listen(4040);
+app.listen(4040, "127.0.0.1", function(err) {
 
-console.log("Server Started");
+    if (err) {
+       // console.log("Faileds to started successfully");
+      //  console.log(err);
+    }
+    else {
+        console.log("Server started successfully");
+    }
+});
+
