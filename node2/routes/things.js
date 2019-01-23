@@ -4,6 +4,7 @@ module.exports = function(app) {
 
     app.get("/hi", thingController.hi);
     app.get("/hello", thingController.hello);
+    app.get("/other", thingController.other);
  
 
 

@@ -7,6 +7,8 @@ let events = require('events');
 let express = require('express');
 let bodyParser = require('body-parser');
 
+let request = require('request');
+
 let app = express();
 
 var analyticsEventEmitter = new events.EventEmitter();
@@ -62,4 +64,21 @@ app.listen(4040, "127.0.0.1", function(err) {
         console.log("Server started successfully");
     }
 });
+
+request.get("http://httpbin.org/ip", (error, response, body) => {
+
+    if (error) {
+        console.log(error);
+    }
+    else {
+        console.log("Got data " + body);
+
+        let info = JSON.parse(body);
+
+        console.log("origin=" + info.origin);
+    }
+
+});
+
+
 
