@@ -10,4 +10,8 @@ module.exports = function(app) {
     app.put("/services/v1/customers/:id", customerController.updateCustomerWithId);
     app.delete("/services/v1/customers/:id", customerController.deleteCustomerWithId);
 
+    app.post("/services/v1/customers/signup", customerController.signupCustomer);
+    app.post("/services/v1/customers/login", customerController.loginCustomer);
+
+
 }

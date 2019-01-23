@@ -2,6 +2,8 @@ let uuid = require('uuid');
 
 let customer1 = {
     id: "1234",
+    userName: "tom1234",
+    password: "password",
     name: "Tom",
     address: "100 A Street",
     notes: ["New customer"]
@@ -9,6 +11,8 @@ let customer1 = {
 
  let customer2 = {
     id: "2222",
+    userName: "bobby2222",
+    password: "password",
     name: "Bobby",
     address: "200 B Street",
     notes: ["Old customer"]
@@ -234,6 +238,138 @@ exports.findAllCustomers = function(req, res) {
     
   
    };
+
+
+   
+   exports.signupCustomer = function(req, res) {
+
+
+    let body = req.body;
+
+    console.log("signupCustomer processing");
+    console.dir(body);
+
+    // {
+    //     "name": "Tom",
+    //     "userName":"tom1234",
+    //     "password":"password",
+    //     "address": "100 A Street"
+    // }
+
+    if (isEmpty(body.name) || isEmpty(body.userName) || isEmpty(body.password) | isEmpty(body.address)) {
+
+        console.log("Missing fields");
+
+        res.status(400);
+        res.setHeader("Content-Type", "application/json")
+    
+        let notFoundMessage = {
+            status: "Failed",
+            message: "missing fields"
+        };
+
+        res.json(notFoundMessage);
+
+        return
+    }
+
+    let tmpCustomer = {
+        id: uuid.v4(),
+        userName: body.userName,
+        password: body.password,
+        name: body.name,
+        address: body.address,
+        notes: []
+     };
+
+    // {
+    //     "id": "1234",
+    //     "userName": "tom1234",
+    //     "name": "Tom",
+    //     "address": "100 A Street",
+    //     "notes": [
+    //         "New customer"
+    //     ]
+    // }
+
+    customers.push(tmpCustomer);
+
+    res.status(201);
+    res.setHeader("Content-Type", "application/json")
+
+  
+
+    res.json(tmpCustomer);
+}
+   
+   exports.loginCustomer = function(req, res) {
+
+
+    let body = req.body;
+
+    console.log("loginCustomer processing");
+    console.dir(body);
+
+    let customer = body;
+
+    let userName = customer.userName;
+    let password = customer.password;
+
+    let found = false;
+
+    let foundCustomer = {};
+
+    customers.forEach(function(customer) {
+
+        console.log("Iterate CustomerId=" + customer.id);
+
+        if (customer.userName == userName && customer.password == password) {
+
+            console.log("Found CustomerId=" + customer.id);
+
+            found = true;
+
+            foundCustomer = customer;
+
+        }
+
+    });
+
+    if (!found) {
+        res.status(400);
+        res.setHeader("Content-Type", "application/json")
+    
+        let notFoundMessage = {
+            status: "Failed",
+            message: "Not found"
+        };
+
+        res.json(notFoundMessage);
+    }
+    else {
+        res.status(200);
+        res.setHeader("Content-Type", "application/json")
+
+        let foundCustomerCopy = JSON.parse(JSON.stringify(foundCustomer));
+
+        delete foundCustomerCopy.password;
+    
+        res.json(foundCustomerCopy);
+    }
+  
+
+   }
+
+
+   function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
+
 
 
 
