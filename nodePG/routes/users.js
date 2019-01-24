@@ -7,13 +7,13 @@ module.exports = function(app) {
 
     app.get("/services/v1/users", userController.findAllUsers);
     app.get("/services/v2/users", userController.newFindAllUsers);
-    // app.get("/services/v1/users/:id", customerController.findCustomerById);
-    // app.post("/services/v1/users", customerController.createCustomer);
-    // app.put("/services/v1/users/:id", customerController.updateCustomerWithId);
-    // app.delete("/services/v1/users/:id", customerController.deleteCustomerWithId);
+    app.get("/services/v1/users/:id", userController.findUserById);
+    app.post("/services/v1/users", userController.createUser);
+    app.put("/services/v1/users/:id", userController.updateUserWithId);
+    app.delete("/services/v1/users/:id", userController.deleteUserWithId);
 
-    // app.post("/services/v1/users/signup", customerController.signupCustomer);
-    // app.post("/services/v1/users/login", customerController.loginCustomer);
+ //   app.delete("/services/v1/users/:id/transactions", userController.deleteUserWithId);
+ //   app.delete("/services/v1/users/:id/transactions/:transactiontype", userController.deleteUserWithId);
 
 
 }

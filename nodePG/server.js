@@ -1,14 +1,14 @@
 
 
-let express = require('express');
-let uuid = require('uuid');
-let events = require('events');
-let bodyParser = require('body-parser');
-let request = require('request');
+const express = require('express');
+const uuid = require('uuid');
+const events = require('events');
+const bodyParser = require('body-parser');
+const request = require('request');
 
-let PostgresPool = require('pg').Pool;
+const PostgresPool = require('pg').Pool;
 
-let pgPoolConnections = new PostgresPool(
+const pgPoolConnections = new PostgresPool(
     {
         user: 'api',
         host: 'localhost',
@@ -19,7 +19,7 @@ let pgPoolConnections = new PostgresPool(
 
 );
 
-let app = express();
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
