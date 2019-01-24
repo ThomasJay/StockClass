@@ -2,6 +2,8 @@
 // Create 1/23/2019
 // Stock Class
 
+let x = 0;
+
 let uuid = require('uuid');
 let events = require('events');
 let express = require('express');
@@ -10,6 +12,8 @@ let bodyParser = require('body-parser');
 let request = require('request');
 
 let app = express();
+
+x++;
 
 var analyticsEventEmitter = new events.EventEmitter();
 
@@ -26,7 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-
+x++;
 
 
 require("./routes/customers.js")(app);
@@ -53,6 +57,7 @@ app.use(function(err, req, res, next) {
     res.end("{\"status\":\"Something went really bad\"}");
 });
 
+x++;
 
 app.listen(4040, "127.0.0.1", function(err) {
 
@@ -80,5 +85,5 @@ request.get("http://httpbin.org/ip", (error, response, body) => {
 
 });
 
-
+x++;
 

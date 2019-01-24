@@ -1,0 +1,52 @@
+\conninfo
+
+
+
+
+sudo mkdir -p /etc/paths.d &&
+echo /Applications/Postgres.app/Contents/Versions/latest/bin | sudo tee /etc/paths.d/postgresapp
+
+
+
+
+
+Create a user
+
+CREATE ROLE api WITH LOGIN PASSWORD 'password';
+
+
+ALTER ROLE api CREATEDB;
+
+\du to list all roles/users.
+
+Exit from the default session
+
+\q
+
+
+
+psql -d postgres -U api
+
+CREATE DATABASE api;
+
+\list command to see the available databases.
+
+Use new db
+
+\c api
+
+CREATE TABLE users (
+  id VARCHAR(100) PRIMARY KEY,
+  name VARCHAR(30),
+  email VARCHAR(30)
+);
+
+
+INSERT INTO users (id, name, email)
+VALUES ('112233', 'Tom', 'tom@example.com'), ('2222', 'Sam', 'sam@example.com');
+
+SELECT * FROM users;
+
+
+
+
