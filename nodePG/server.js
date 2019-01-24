@@ -27,3 +27,5 @@ pgPoolConnections.query('select * from users', (error, results) => {
 
 });
 
+pgPoolConnections.end();
+
