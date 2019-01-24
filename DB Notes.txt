@@ -50,3 +50,10 @@ SELECT * FROM users;
 
 
 
+CREATE TABLE analytics (
+  id VARCHAR(100) PRIMARY KEY,
+  eventName VARCHAR(30),
+  totalMS Int,
+  count Int,
+  status VARCHAR(30)
+);
